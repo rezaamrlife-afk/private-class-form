@@ -1,0 +1,1146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Private Classes Reports – 2025–2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+/* ── Reset & Base ─────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --navy:       #22538D;
+  --navy-dark:  #1a3f6f;
+  --navy-light: #2d6bb5;
+  --accent:     #3b82f6;
+  --accent-soft:#eff6ff;
+  --fg:         #0f172a;
+  --fg-2:       #334155;
+  --fg-3:       #64748b;
+  --border:     #e2e8f0;
+  --border-focus:#22538D;
+  --bg:         #f8fafc;
+  --card:       #ffffff;
+  --error:      #ef4444;
+  --success:    #22c55e;
+  --radius:     12px;
+  --radius-sm:  8px;
+  --shadow:     0 1px 3px rgba(0,0,0,.06), 0 4px 24px rgba(34,83,141,.08);
+  --shadow-lg:  0 8px 40px rgba(34,83,141,.13);
+  --font:       'Sora', sans-serif;
+  --mono:       'JetBrains Mono', monospace;
+  --trans:      .2s cubic-bezier(.4,0,.2,1);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--fg);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* ── Background ───────────────────────────────────────────────── */
+.bg-grid {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background-image:
+    linear-gradient(to right, rgba(34,83,141,.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(34,83,141,.04) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+.bg-glow {
+  position: fixed; top: -200px; right: -200px; z-index: 0; pointer-events: none;
+  width: 700px; height: 700px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(34,83,141,.12) 0%, transparent 70%);
+}
+
+/* ── Layout ───────────────────────────────────────────────────── */
+.app-wrapper {
+  position: relative; z-index: 1;
+  max-width: 720px; margin: 0 auto;
+  padding: 32px 20px 48px;
+  display: flex; flex-direction: column; gap: 24px;
+}
+
+/* ── Header ───────────────────────────────────────────────────── */
+.app-header {
+  display: flex; align-items: center; gap: 12px;
+}
+.logo-mark svg { display: block; }
+.header-text { display: flex; flex-direction: column; gap: 2px; }
+.header-title { font-size: .9rem; font-weight: 600; color: var(--navy); letter-spacing: .01em; }
+.header-sub   { font-size: .75rem; color: var(--fg-3); font-weight: 400; }
+
+/* ── Card ─────────────────────────────────────────────────────── */
+.form-card {
+  background: var(--card);
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+  padding: 40px 40px 36px;
+}
+
+/* ── Progress ─────────────────────────────────────────────────── */
+.progress-wrap { margin-bottom: 36px; }
+.progress-steps { display: flex; align-items: center; margin-bottom: 16px; }
+.step {
+  display: flex; align-items: center; gap: 8px;
+  flex: 1;
+}
+.step-dot {
+  width: 32px; height: 32px; border-radius: 50%;
+  border: 2px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: .78rem; font-weight: 600; color: var(--fg-3);
+  background: var(--bg);
+  transition: all var(--trans);
+  flex-shrink: 0;
+}
+.step.active .step-dot {
+  border-color: var(--navy); background: var(--navy); color: #fff;
+  box-shadow: 0 0 0 4px rgba(34,83,141,.15);
+}
+.step.done .step-dot {
+  border-color: var(--success); background: var(--success); color: #fff;
+}
+.step-label { font-size: .78rem; font-weight: 500; color: var(--fg-3); transition: color var(--trans); }
+.step.active .step-label { color: var(--navy); font-weight: 600; }
+.step.done .step-label { color: var(--success); }
+.step-line { flex: 1; height: 2px; background: var(--border); border-radius: 2px; margin: 0 8px; }
+.progress-bar { height: 4px; background: var(--border); border-radius: 99px; overflow: hidden; }
+.progress-fill {
+  height: 100%; width: 16%;
+  background: linear-gradient(90deg, var(--navy), var(--accent));
+  border-radius: 99px;
+  transition: width .5s cubic-bezier(.4,0,.2,1);
+}
+
+/* ── Section Header ───────────────────────────────────────────── */
+.section-header { margin-bottom: 6px; }
+.section-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: .72rem; font-weight: 600; color: var(--navy);
+  background: var(--accent-soft); border: 1px solid rgba(34,83,141,.2);
+  border-radius: 99px; padding: 4px 12px; margin-bottom: 10px;
+  letter-spacing: .04em; text-transform: uppercase;
+}
+.section-title { font-size: 1.25rem; font-weight: 700; color: var(--fg); margin-bottom: 6px; }
+.section-desc  { font-size: .85rem; color: var(--fg-2); line-height: 1.6; margin-bottom: 28px; }
+
+/* ── Pages ────────────────────────────────────────────────────── */
+.form-page { display: none; }
+.form-page.active { display: block; animation: fadeUp .35s ease; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Fields ───────────────────────────────────────────────────── */
+.fields-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 32px;
+}
+.field-group { display: flex; flex-direction: column; gap: 6px; }
+.field-group.full { grid-column: 1 / -1; }
+
+.field-label {
+  font-size: .82rem; font-weight: 600; color: var(--fg);
+  letter-spacing: .01em;
+}
+.req { color: var(--navy); }
+.field-hint { font-size: .76rem; color: var(--fg-3); margin-top: -2px; }
+
+/* Inputs */
+.select-wrap, .input-wrap { position: relative; }
+
+select, input[type="date"], input[type="time"], textarea {
+  width: 100%;
+  font-family: var(--font); font-size: .88rem; color: var(--fg);
+  background: var(--bg);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 11px 14px;
+  outline: none;
+  transition: border-color var(--trans), box-shadow var(--trans), background var(--trans);
+  appearance: none; -webkit-appearance: none;
+}
+select { padding-right: 36px; cursor: pointer; }
+select:focus, input[type="date"]:focus, input[type="time"]:focus, textarea:focus {
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 3px rgba(34,83,141,.12);
+  background: #fff;
+}
+select.invalid, input.invalid, textarea.invalid {
+  border-color: var(--error);
+  box-shadow: 0 0 0 3px rgba(239,68,68,.1);
+}
+textarea { resize: vertical; min-height: 90px; line-height: 1.5; }
+.select-arrow {
+  position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+  width: 16px; height: 16px; color: var(--fg-3); pointer-events: none;
+}
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="time"]::-webkit-calendar-picker-indicator { filter: opacity(.5); cursor: pointer; }
+
+/* Radio groups */
+.radio-group { display: flex; flex-direction: column; gap: 8px; }
+.radio-option {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 14px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all var(--trans);
+  background: var(--bg);
+  font-size: .87rem; color: var(--fg-2);
+}
+.radio-option:hover { border-color: var(--navy); background: var(--accent-soft); color: var(--navy); }
+.radio-option input[type="radio"] { accent-color: var(--navy); width: 16px; height: 16px; flex-shrink: 0; }
+.radio-option.selected { border-color: var(--navy); background: var(--accent-soft); color: var(--navy); font-weight: 500; }
+.radio-group.invalid .radio-option { border-color: var(--error); }
+
+/* Errors */
+.field-error {
+  font-size: .75rem; color: var(--error); font-weight: 500;
+  display: none;
+  animation: shake .3s ease;
+}
+.field-error.visible { display: block; }
+
+@keyframes shake {
+  0%,100% { transform: translateX(0); }
+  25%      { transform: translateX(-4px); }
+  75%      { transform: translateX(4px); }
+}
+
+/* ── Session Summary ──────────────────────────────────────────── */
+.session-summary {
+  display: flex; flex-wrap: wrap; gap: 8px;
+  margin-bottom: 24px;
+  padding: 14px 16px;
+  background: var(--accent-soft);
+  border: 1px solid rgba(34,83,141,.15);
+  border-radius: var(--radius-sm);
+  font-size: .79rem; color: var(--navy);
+}
+.session-summary .chip {
+  display: flex; align-items: center; gap: 5px;
+  background: rgba(34,83,141,.08);
+  border-radius: 99px; padding: 3px 10px;
+  font-weight: 500;
+}
+.session-summary .chip svg { width: 12px; height: 12px; flex-shrink: 0; }
+
+/* ── Actions ──────────────────────────────────────────────────── */
+.form-actions { display: flex; justify-content: flex-end; }
+.form-actions.two-col { justify-content: space-between; }
+
+.btn-next, .btn-submit {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: linear-gradient(135deg, var(--navy), var(--navy-light));
+  color: #fff; border: none; border-radius: var(--radius-sm);
+  padding: 12px 24px; font-family: var(--font);
+  font-size: .88rem; font-weight: 600; cursor: pointer;
+  box-shadow: 0 4px 14px rgba(34,83,141,.3);
+  transition: all var(--trans);
+}
+.btn-next svg, .btn-submit .btn-icon { width: 16px; height: 16px; }
+.btn-next:hover, .btn-submit:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(34,83,141,.4); }
+.btn-next:active, .btn-submit:active { transform: translateY(0); }
+
+.btn-back {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: transparent; color: var(--fg-2);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm); padding: 11px 20px;
+  font-family: var(--font); font-size: .88rem; font-weight: 500;
+  cursor: pointer; transition: all var(--trans);
+}
+.btn-back svg { width: 16px; height: 16px; }
+.btn-back:hover { border-color: var(--navy); color: var(--navy); background: var(--accent-soft); }
+
+.btn-submit .btn-loader { display: none; }
+.btn-submit.loading .btn-text { display: none; }
+.btn-submit.loading .btn-loader { display: block; }
+.btn-submit.loading .btn-icon  { display: none; }
+
+.spin { width: 18px; height: 18px; animation: rotate 1s linear infinite; }
+@keyframes rotate { to { transform: rotate(360deg); } }
+
+/* ── Success ──────────────────────────────────────────────────── */
+.success-screen { text-align: center; padding: 20px 0 10px; animation: fadeUp .4s ease; }
+.success-icon { margin-bottom: 20px; }
+.success-icon svg { width: 64px; height: 64px; }
+.success-title { font-size: 1.5rem; font-weight: 700; color: var(--fg); margin-bottom: 12px; }
+.success-msg   { font-size: .9rem; color: var(--fg-2); line-height: 1.6; max-width: 440px; margin: 0 auto 28px; }
+.btn-another {
+  display: inline-flex; align-items: center;
+  background: transparent; color: var(--navy);
+  border: 1.5px solid var(--navy);
+  border-radius: var(--radius-sm); padding: 10px 22px;
+  font-family: var(--font); font-size: .88rem; font-weight: 600;
+  cursor: pointer; transition: all var(--trans);
+}
+.btn-another:hover { background: var(--accent-soft); }
+
+/* ── Footer ───────────────────────────────────────────────────── */
+.app-footer { text-align: center; }
+.app-footer p { font-size: .75rem; color: var(--fg-3); }
+
+/* ── Divider ──────────────────────────────────────────────────── */
+.section-divider {
+  border: none; border-top: 1px dashed var(--border);
+  margin: 28px 0;
+}
+
+/* ── Responsive ───────────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .app-wrapper { padding: 20px 16px 40px; gap: 16px; }
+  .form-card   { padding: 24px 20px 22px; border-radius: 16px; }
+  .fields-grid { grid-template-columns: 1fr; }
+  .field-group.full { grid-column: 1; }
+  .form-actions.two-col { gap: 10px; }
+  .btn-next, .btn-submit, .btn-back { padding: 11px 16px; font-size: .83rem; }
+  .step-label { display: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="bg-grid"></div>
+<div class="bg-glow"></div>
+
+<div class="app-wrapper">
+
+  <!-- Header -->
+  <header class="app-header">
+    <div class="logo-mark"><img src="data:image/png;base64,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" style="height:48px;width:auto;" alt="American Life" /></div>
+    <div class="header-text">
+      <span class="header-title">American Life Bahçeşehir</span>
+      <span class="header-sub">Private Classes Report Portal</span>
+    </div>
+  </header>
+
+  <!-- Form Card -->
+  <main class="form-card">
+
+    <!-- Progress Bar -->
+    <div class="progress-wrap">
+      <div class="progress-steps">
+        <div class="step active" data-step="1">
+          <div class="step-dot"><span>1</span></div>
+          <div class="step-label">Session Info</div>
+        </div>
+        <div class="step-line"></div>
+        <div class="step" data-step="2">
+          <div class="step-dot"><span>2</span></div>
+          <div class="step-label">Session Details</div>
+        </div>
+        <div class="step-line"></div>
+        <div class="step" data-step="3">
+          <div class="step-dot"><span>3</span></div>
+          <div class="step-label">Lesson Report</div>
+        </div>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    </div>
+
+    <form id="reportForm" novalidate>
+
+      <!-- ══════════════════════════════════════════════════════ -->
+      <!-- PAGE 1 — Session Info                                  -->
+      <!-- ══════════════════════════════════════════════════════ -->
+      <div class="form-page active" id="page1">
+
+        <div class="section-header">
+          <div class="section-badge">
+            <svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor"><circle cx="5" cy="5" r="5"/></svg>
+            Section 1 of 3
+          </div>
+          <div class="section-title">Private Classes Reports – 2025–2026</div>
+          <div class="section-desc">Dear Teacher, please complete this report carefully after each session to help us track and improve each student's progress. Thank you for taking the time to think through the items carefully and write down your thoughts honestly.</div>
+        </div>
+
+        <div class="fields-grid">
+
+          <!-- Teacher -->
+          <div class="field-group full">
+            <label class="field-label" for="teacher">Name of Teacher <span class="req">*</span></label>
+            <p class="field-hint">Please select your name accurately.</p>
+            <div class="select-wrap">
+              <select id="teacher" name="teacher" required>
+                <option value="">Choose your name…</option>
+                <option value="AmrE01 - Ms. Aynur - English">AmrE01 – Ms. Aynur – English</option>
+                <option value="AmrE03 - Mr. Reza - English">AmrE03 – Mr. Reza – English</option>
+                <option value="AmrE05 - Mr. Behzad - English">AmrE05 – Mr. Behzad – English</option>
+                <option value="AmrE06 - Ms. Pardis - English">AmrE06 – Ms. Pardis – English</option>
+                <option value="AmrE08 - Mr. Kian - English">AmrE08 – Mr. Kian – English</option>
+                <option value="AmrE09 - Ms. Fareh - English">AmrE09 – Ms. Fareh – English</option>
+                <option value="AmrE11 - Ms. Arzu - English">AmrE11 – Ms. Arzu – English</option>
+                <option value="AmrE13 - Ms. Jessica - English">AmrE13 – Ms. Jessica – English</option>
+                <option value="AmrE15 - Ms. Neda - German">AmrE15 – Ms. Neda – German</option>
+                <option value="AmrE18 - Ms. Aynur - Russian">AmrE18 – Ms. Aynur – Russian</option>
+                <option value="AmrE20 - Ms. Melisa - French">AmrE20 – Ms. Melisa – French</option>
+                <option value="AmrS22 - Ms. Elizabeth - Spanish">AmrS22 – Ms. Elizabeth – Spanish</option>
+                <option value="AmrS23 - Mr. Kian - Italian">AmrS23 – Mr. Kian – Italian</option>
+                <option value="AmrS24 - Ms. Niki - English">AmrS24 – Ms. Niki – English</option>
+              </select>
+              <svg class="select-arrow" viewBox="0 0 20 20" fill="none"><path d="M5 7.5l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="field-error" id="err-teacher">Please select your name.</div>
+          </div>
+
+          <!-- Student -->
+          <div class="field-group full">
+            <label class="field-label" for="student">Name of Student <span class="req">*</span></label>
+            <p class="field-hint">Please select your student accurately.</p>
+            <div class="select-wrap">
+              <select id="student" name="student" required>
+                <option value="">Choose student…</option>
+                <option>Amrm25001 - Rıdvan Taşlıtepe - English</option>
+                <option>Amrf25002 - Sabriye-Sevgi - English</option>
+                <option>Amrf25003 - Yasemin Kavran - English</option>
+                <option>Amrm25004 - M. Ali Erol - English</option>
+                <option>Amrf25005 - Fatma Beril Yılmaz - English</option>
+                <option>Amrf25006 - Ayşen Özyurt - English</option>
+                <option>Amrf25007 - Cennet Kiyran - English</option>
+                <option>Amrf25008 - Esma Helvacı - English</option>
+                <option>Amrf25009 - H. Nur Doğan - English</option>
+                <option>Amrm25010 - Muhammet Safa Usta - English</option>
+                <option>Amrm25011 - Mehmet Efe Günay - English</option>
+                <option>Amrm25012 - SAİT ÇİFTÇİ - English</option>
+                <option>Amrf25013 - Dila Kavran - English</option>
+                <option>Amrm25014 - Okan Siyahlı - English</option>
+                <option>Amrm25015 - Damla Derya - English</option>
+                <option>Amrf25016 - Aysu Er - English</option>
+                <option>Amrf25017 - Kaya İstektepe - English</option>
+                <option>Amrm25018 - Zeynep Çetinkaya - English</option>
+                <option>Amrf25019 - Jale Akbalçık - English</option>
+                <option>Amrf25020 - Kadir Kiyran - English</option>
+                <option>Amrm25021 - Eda Nur Şuheda - English</option>
+                <option>Amrf25022 - Burak Gül - English</option>
+                <option>Amrm25023 - Feryal Ela - English</option>
+                <option>Amrf25024 - Berkan Kahvecioğlu - Spanish</option>
+                <option>Amrm25025 - Defne Aydın - English</option>
+                <option>Amrf25026 - Gülsen Senil Önüne - German</option>
+                <option>Amrf25027 - Hüseyin Yaşar - German</option>
+                <option>Amrf25028 - Ceylin Yeltekin - German</option>
+                <option>Amrm25029 - Ömer Yeltekin - German</option>
+                <option>Amr25030 - Miray Akkaya - German</option>
+                <option>Amrm25031 - Can Kökdere - German</option>
+                <option>Amrf25032 - PELİN MADEN - English</option>
+                <option>Amrm25033 - Tarkan Doğan - English</option>
+                <option>Amrf25034 - Emir-Cuma - English</option>
+                <option>Amrf25035 - Sahra Nur Altınbaşak - English</option>
+                <option>Amrm25036 - Ahmet-Harun - English</option>
+                <option>Amrm25037 - Hilal Candan - English</option>
+                <option>Amrf25038 - Simay Öztürk (66 almanca+ 24 ing) - English</option>
+                <option>Amrm25039 - Gizem Hnm. - English</option>
+                <option>Amrf25040 - Cihan Bayat - English</option>
+                <option>Amrf25041 - Emir Tok - English</option>
+                <option>Amrf25042 - Uğur Güngör - English</option>
+                <option>Amrm25043 - Bilal Doğan - English</option>
+                <option>Amrm25044 - M. Talha Aydın - English</option>
+                <option>Amrm25045 - Ayşe Melek - English</option>
+                <option>Amrm25046 - Merve Güngör - English</option>
+                <option>Amrm25047 - Uğur Yılmaz - English</option>
+                <option>Amrm25048 - Hamdard Bey - English</option>
+                <option>Amrm25049 - Ahmet-Semih - Hilal - VIP GROUP - English</option>
+                <option>Amrf25050 - ROZA SEZER - English</option>
+                <option>Amrf25051 - AMER SANCAKTAR - Italian</option>
+                <option>Amrm25052 - HAKKI KILINÇ - English</option>
+                <option>Amrm25053 - SELEN ERYILMAZ - English</option>
+                <option>Amrm25054 - BETÜL ACAR - English</option>
+                <option>Amrf25055 - SUDE ŞAHİN (BAYKAR) - English</option>
+                <option>Amr25056m - Mustafa Buğra Sezici - German</option>
+                <option>Amrm25057 - Dehan İrem Yavuz - English</option>
+                <option>Amrf25058 - ŞEYMA BALCI - English</option>
+                <option>Amrf25059 - ŞEYMA BALCI - German</option>
+                <option>Amrf25060 - BAGER Özbey - English</option>
+                <option>Amrm25061 - HATİCE GÜLTEKİN - English</option>
+                <option>Amrf25062 - AZRA GÜLDEN - English</option>
+                <option>Amrf25063 - Berra Çelik - English</option>
+                <option>Amrm25064 - EMRE YILMAZ - English</option>
+                <option>Amrf25065 - ONUR ÖZELSARIOĞLU - English</option>
+                <option>Amrf25066 - KEREM KOYUNCU - English</option>
+                <option>Amrf25067 - ZEYNEP YAREN KORT - English</option>
+                <option>Amrm25068 - NESLİHAN BULUT - English</option>
+                <option>Amrm25069 - YUSUF BAHA ÇELİK - SÜRE BİTTİ - English</option>
+                <option>Amrm25070 - MUHHAREM ÜÇKARDEŞLER - SÜRE BİTTİ - English</option>
+                <option>Amrf25071 - ZERRİN VE CENK KILIÇ KY - English</option>
+                <option>Amrf25072 - MERYEM-FATMA-YUNUS KARLI - VIP GROUP - English</option>
+                <option>Amrm25073 - DEVRIM BOLAT - English</option>
+                <option>Amrm25074 - Ecrin GÖKTÜRK - English</option>
+                <option>Amrm25075 - Yigit Efe Dalyan - English</option>
+                <option>Amrf25076 - RUMEYSA ACAR - English</option>
+                <option>Amrm25077 - Yagiz Cem - English</option>
+                <option>Amrm25078 - Doruk Şahin - German</option>
+                <option>Amrf25079 - Meryem Karabağ - English</option>
+                <option>Amrm25080 - Serhatkan Yüksel - English</option>
+                <option>Amrm25081 - Deniz Berk Karagülle - English</option>
+                <option>Amrf25082 - Naz Kutlar - German</option>
+                <option>Amrm25083 - Barış Güneş Erkol - English</option>
+                <option>Amrm25084 - Süleyman Topaloğlu - English</option>
+                <option>Amrm25085 - Sertan Şen - English</option>
+                <option>Amrm25086 - ESRA-MEHMET-MUSA VIP BAYKAR - English</option>
+                <option>Amrm25087 - MEHMET ŞUNGUR - English</option>
+                <option>Amrm25088 - ÇAĞAN and KÜTAY - English</option>
+                <option>Amrm25089 - MOCK Exam - English</option>
+                <option>Amrm25090 - Vedat Eren Erdener - English</option>
+                <option>Amrm25091 - Muharrem Rzayev - English</option>
+                <option>Amrm25092 - Ahmet Korkmaz - English</option>
+                <option>Amrm25093 - Didem Paker - English</option>
+                <option>Amrm25094 - Berat Emanet - English</option>
+                <option>Amrm25095 - Nurgul Rzayev - English</option>
+                <option>Amrm25096 - Muhammed Bıçakçı - English</option>
+                <option>Amrm25097 - Nader Khadıvzad ve Farzaneh Khadıvzad - Turkish</option>
+                <option>Amrm25098 - Elif Serra Yüce - German</option>
+                <option>Amrm25099 - Banu Karaalioğlu - English</option>
+                <option>Amrm25100 - Arel Sırmabıyıkoğlu - French</option>
+                <option>Amrm25101 - Seren Ay Erkek - English</option>
+                <option>Amrm25102 - Emirhan-Kerem VIP BAYKAR - English</option>
+                <option>Amrm25103 - Derin Bay - English</option>
+                <option>Amrm25104 - Emir Arkın-Elif Sahra - English</option>
+                <option>Amrm25105 - HASAN BASRI ÖZDAMAR - English</option>
+                <option>Amrm25106 - Kıvanç Çelebi - English</option>
+                <option>Amrm25107 - İsmail-Batın - English</option>
+                <option>Amrm25108 - Speaking Club - English</option>
+                <option>Amrm25109 - AYTEN PİLAVCI - English</option>
+                <option>Amrm25110 - KİYARAD KARABAĞLI - English</option>
+                <option>Amrm25111 - Sinan Çevik - English</option>
+                <option>Amrm25112 - Ela Ektiren - English</option>
+                <option>Amrm25113 - Selahattin Arda Adatepe - English</option>
+                <option>Amrm25114 - Elmas Ayşen Özyurt - English</option>
+                <option>Amrm25115 - BERRİN KARABEKİR - Italian</option>
+                <option>Amrm25116 - ZEYNEP BEREN TANSEL - English</option>
+                <option>Amrm25117 - MUHAMMED KAAN IŞIK - Arabic</option>
+                <option>Amrm25118 - HARMANCIOĞLU ITALIAN VIP GROUP - Italian</option>
+                <option>Amrm25119 - ASLI ERALP - English</option>
+                <option>Amrm25120 - ZEHRA CEYLİN AYDOĞDU - Spanish</option>
+                <option>Amrm25121 - CEREN DARKILIÇ - German</option>
+                <option>Amrm25122 - EFE ASLAN VE EGE ASLAN - English</option>
+                <option>Amrm25123 - Belgin Karabekir - English</option>
+                <option>Amrm25125 - Ezgi Öztürk - English</option>
+                <option>Amrm25126 - Melek Oruç - English</option>
+                <option>Amrm25127 - ÇINAR İSMET ATALAY - German</option>
+                <option>Amrm25128 - EGEMEN AKDOĞAN - English</option>
+                <option>Amrm25129 - Cansu Şafak - German</option>
+                <option>Amrm25130 - Cem Kurum - English</option>
+                <option>Amrm25131 - Hulusi Berat Emanet - English</option>
+                <option>Amrm25132 - Adnan DOĞAN - Italian</option>
+                <option>Amrm25133 - MELTEM GÜL, ALMANCA 3 KUR VIP - German</option>
+                <option>Amrm25134 - Burçin Çevik - English</option>
+                <option>Amrm25135 - Serkan Altın - English</option>
+                <option>Amrm25136 - Mahsun SONĞUR - English</option>
+                <option>Amrm25137 - Gürkan Çakmak - English</option>
+                <option>Amrm25138 - Burak Güngör - English</option>
+                <option>Amrm25139 - EZGİ HIRA - English</option>
+                <option>Amrm25140 - Elif Emek - English</option>
+              </select>
+              <svg class="select-arrow" viewBox="0 0 20 20" fill="none"><path d="M5 7.5l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="field-error" id="err-student">Please select a student.</div>
+          </div>
+
+          <!-- Date -->
+          <div class="field-group">
+            <label class="field-label" for="date">Date <span class="req">*</span></label>
+            <p class="field-hint">Please select the date accurately.</p>
+            <div class="input-wrap">
+              <input type="date" id="date" name="date" required />
+            </div>
+            <div class="field-error" id="err-date">Please select a date.</div>
+          </div>
+
+          <!-- Class Time -->
+          <div class="field-group">
+            <label class="field-label" for="classTime">Class Time <span class="req">*</span></label>
+            <p class="field-hint">Please select your class time accurately.</p>
+            <div class="input-wrap">
+              <input type="time" id="classTime" name="classTime" required />
+            </div>
+            <div class="field-error" id="err-classTime">Please select class time.</div>
+          </div>
+
+          <!-- Level -->
+          <div class="field-group full">
+            <label class="field-label" for="level">Level <span class="req">*</span></label>
+            <p class="field-hint">Please select the level accurately.</p>
+            <div class="select-wrap">
+              <select id="level" name="level" required>
+                <option value="">Choose level…</option>
+                <optgroup label="Adult">
+                  <option>A1 Adult</option>
+                  <option>A2 Adult</option>
+                  <option>B1 Adult</option>
+                  <option>B2 Adult</option>
+                  <option>C1 Adult</option>
+                  <option>C2 Adult</option>
+                </optgroup>
+                <optgroup label="Exam Prep">
+                  <option>IELTS Preparation</option>
+                  <option>TOEFL Preparation</option>
+                  <option>SAT Preparation</option>
+                  <option>YDS Preparation</option>
+                  <option>YOKDIL Preparation</option>
+                  <option>PTE Preparation</option>
+                </optgroup>
+                <optgroup label="Teenglish">
+                  <option>A1.1 Teenglish</option>
+                  <option>A1.2 Teenglish</option>
+                  <option>A1.3 Teenglish</option>
+                  <option>A2.1 Teenglish</option>
+                  <option>A2.2 Teenglish</option>
+                  <option>A2.3 Teenglish</option>
+                  <option>B1.1 Teenglish</option>
+                  <option>B1.2 Teenglish</option>
+                  <option>B1.3 Teenglish</option>
+                </optgroup>
+                <optgroup label="German">
+                  <option>A1.1 German</option>
+                  <option>A1.2 German</option>
+                  <option>A2.1 German</option>
+                  <option>A2.2 German</option>
+                  <option>B1.1 German</option>
+                  <option>B1.2 German</option>
+                </optgroup>
+                <optgroup label="Other">
+                  <option>Mock Exam</option>
+                  <option>Speaking Club</option>
+                </optgroup>
+              </select>
+              <svg class="select-arrow" viewBox="0 0 20 20" fill="none"><path d="M5 7.5l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="field-error" id="err-level">Please select a level.</div>
+          </div>
+
+          <!-- Classroom -->
+          <div class="field-group full">
+            <label class="field-label" for="classroom">Classroom <span class="req">*</span></label>
+            <p class="field-hint">If face-to-face, select the classroom. If online, choose Online.</p>
+            <div class="select-wrap">
+              <select id="classroom" name="classroom" required>
+                <option value="">Choose classroom…</option>
+                <option>Paris</option>
+                <option>Berlin</option>
+                <option>Amsterdam</option>
+                <option>Moscow</option>
+                <option>London</option>
+                <option>Pekin</option>
+                <option>Madrid</option>
+                <option>Washington</option>
+                <option>Online</option>
+              </select>
+              <svg class="select-arrow" viewBox="0 0 20 20" fill="none"><path d="M5 7.5l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="field-error" id="err-classroom">Please select a classroom.</div>
+          </div>
+
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn-next" id="nextBtn1">
+            Continue to Session Details
+            <svg viewBox="0 0 20 20" fill="none"><path d="M4 10h12M10 4l6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+
+      </div><!-- /page1 -->
+
+      <!-- ══════════════════════════════════════════════════════ -->
+      <!-- PAGE 2 — Session Details & Student Report              -->
+      <!-- ══════════════════════════════════════════════════════ -->
+      <div class="form-page" id="page2">
+
+        <div class="section-header">
+          <div class="section-badge">
+            <svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor"><circle cx="5" cy="5" r="5"/></svg>
+            Section 2 of 3
+          </div>
+          <div class="section-title">Session Details and Student Report</div>
+          <div class="section-desc">It should be completed to evaluate their performance in class.</div>
+        </div>
+
+        <!-- Summary chips -->
+        <div class="session-summary" id="sessionSummary"></div>
+
+        <div class="fields-grid">
+
+          <!-- Lesson Number -->
+          <div class="field-group full">
+            <label class="field-label">Lesson Number <span class="req">*</span></label>
+            <div class="radio-group" id="lessonNumber">
+              <label class="radio-option">
+                <input type="radio" name="lessonNumber" value="1" /> Lesson 1
+              </label>
+              <label class="radio-option">
+                <input type="radio" name="lessonNumber" value="2" /> Lesson 2
+              </label>
+              <label class="radio-option">
+                <input type="radio" name="lessonNumber" value="3" /> Lesson 3
+              </label>
+              <label class="radio-option">
+                <input type="radio" name="lessonNumber" value="4" /> Lesson 4
+              </label>
+              <label class="radio-option">
+                <input type="radio" name="lessonNumber" value="5" /> Lesson 5
+              </label>
+            </div>
+            <div class="field-error" id="err-lessonNumber">Please select a lesson number.</div>
+          </div>
+
+          <!-- Class Performance -->
+          <div class="field-group full">
+            <label class="field-label">Class Performance <span class="req">*</span></label>
+            <p class="field-hint">How effectively did the student behave, participate, and complete tasks? If absent, select "Absent".</p>
+            <div class="radio-group" id="classPerformance">
+              <label class="radio-option">
+                <input type="radio" name="classPerformance" value="Excellent" /> Excellent
+              </label>
+              <label class="radio-option">
+                <input type="radio" name="classPerformance" value="Satisfactory" /> Satisfactory
+              </label>
+              <label class="radio-option">
+                <input type="radio" name="classPerformance" value="Unsatisfactory" /> Unsatisfactory
+              </label>
+              <label class="radio-option">
+                <input type="radio" name="classPerformance" value="Absent" /> Absent
+              </label>
+              <label class="radio-option">
+                <input type="radio" name="classPerformance" value="Exam" /> Exam
+              </label>
+            </div>
+            <div class="field-error" id="err-classPerformance">Please select class performance.</div>
+          </div>
+
+          <!-- Classroom Participation -->
+          <div class="field-group full">
+            <label class="field-label">Classroom Participation <span class="req">*</span></label>
+            <p class="field-hint">Speaking in class, engaging in discussions, asking and answering questions. If absent, select "Absent".</p>
+            <div class="radio-group" id="classParticipation">
+              <label class="radio-option">
+                <input type="radio" name="classParticipation" value="Very good" /> Very good
+              </label>
+              <label class="radio-option">
+                <input type="radio" name="classParticipation" value="Needs Improvement" /> Needs Improvement
+              </label>
+              <label class="radio-option">
+                <input type="radio" name="classParticipation" value="Poor" /> Poor
+              </label>
+              <label class="radio-option">
+                <input type="radio" name="classParticipation" value="Absent" /> Absent
+              </label>
+              <label class="radio-option">
+                <input type="radio" name="classParticipation" value="Exam" /> Exam
+              </label>
+            </div>
+            <div class="field-error" id="err-classParticipation">Please select classroom participation.</div>
+          </div>
+
+        </div>
+
+        <div class="form-actions two-col">
+          <button type="button" class="btn-back" id="backBtn2">
+            <svg viewBox="0 0 20 20" fill="none"><path d="M16 10H4M10 4L4 10l6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Back
+          </button>
+          <button type="button" class="btn-next" id="nextBtn2">
+            Continue to Lesson Report
+            <svg viewBox="0 0 20 20" fill="none"><path d="M4 10h12M10 4l6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+
+      </div><!-- /page2 -->
+
+      <!-- ══════════════════════════════════════════════════════ -->
+      <!-- PAGE 3 — Teacher's Lesson Summary                      -->
+      <!-- ══════════════════════════════════════════════════════ -->
+      <div class="form-page" id="page3">
+
+        <div class="section-header">
+          <div class="section-badge">
+            <svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor"><circle cx="5" cy="5" r="5"/></svg>
+            Section 3 of 3
+          </div>
+          <div class="section-title">Teacher's Summary of the Lesson</div>
+          <div class="section-desc">The report class should be completed.</div>
+        </div>
+
+        <!-- Summary chips -->
+        <div class="session-summary" id="sessionSummary3"></div>
+
+        <div class="fields-grid">
+
+          <!-- Lesson Summary -->
+          <div class="field-group full">
+            <label class="field-label" for="lessonSummary">Lesson Summary <span class="req">*</span></label>
+            <p class="field-hint">What was covered in this session? Includes Unit, Page. Example: Unit 1 / Pages 1–4</p>
+            <textarea id="lessonSummary" name="lessonSummary" rows="3" placeholder="e.g. Unit 5 / Pages 42–46, Past Perfect tense…" required></textarea>
+            <div class="field-error" id="err-lessonSummary">This field is required.</div>
+          </div>
+
+          <!-- Skills Practiced -->
+          <div class="field-group full">
+            <label class="field-label" for="skillsPracticed">Skills Practiced <span class="req">*</span></label>
+            <p class="field-hint">Which skills were practiced? Such as four main skills, Grammar, and Vocabulary.</p>
+            <textarea id="skillsPracticed" name="skillsPracticed" rows="3" placeholder="e.g. Reading, Writing, Grammar – Past Perfect, Vocabulary…" required></textarea>
+            <div class="field-error" id="err-skillsPracticed">This field is required.</div>
+          </div>
+
+          <!-- Plan for Next Session -->
+          <div class="field-group full">
+            <label class="field-label" for="nextPlan">Plan for Next Session <span class="req">*</span></label>
+            <p class="field-hint">What will be taught or practiced next time? Example: Unit 1 / Pages 5–8</p>
+            <textarea id="nextPlan" name="nextPlan" rows="3" placeholder="e.g. Unit 5 / Pages 47–52, Speaking activity…" required></textarea>
+            <div class="field-error" id="err-nextPlan">This field is required.</div>
+          </div>
+
+          <!-- Homework / Worksheet -->
+          <div class="field-group full">
+            <label class="field-label">Homework or Worksheet <span class="req">*</span></label>
+            <div class="radio-group" id="homeworkStatus">
+              <label class="radio-option">
+                <input type="radio" name="homeworkStatus" value="Done" /> Done
+              </label>
+              <label class="radio-option">
+                <input type="radio" name="homeworkStatus" value="Undone" /> Undone
+              </label>
+            </div>
+            <div class="field-error" id="err-homeworkStatus">Please select homework status.</div>
+          </div>
+
+          <!-- Comments or Suggestions -->
+          <div class="field-group full">
+            <label class="field-label" for="comments">Comments or Suggestions <span class="req">*</span></label>
+            <textarea id="comments" name="comments" rows="3" placeholder="Any observations, suggestions, or notes about the student…" required></textarea>
+            <div class="field-error" id="err-comments">This field is required.</div>
+          </div>
+
+        </div>
+
+        <div class="form-actions two-col">
+          <button type="button" class="btn-back" id="backBtn3">
+            <svg viewBox="0 0 20 20" fill="none"><path d="M16 10H4M10 4L4 10l6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Back
+          </button>
+          <button type="submit" class="btn-submit" id="submitBtn">
+            <span class="btn-text">Submit Report</span>
+            <span class="btn-loader">
+              <svg class="spin" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3" stroke-dasharray="40" stroke-dashoffset="10"/></svg>
+            </span>
+            <svg class="btn-icon" viewBox="0 0 20 20" fill="none"><path d="M3 10l5 5L17 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+
+      </div><!-- /page3 -->
+
+    </form>
+
+    <!-- Success Screen -->
+    <div class="success-screen" id="successScreen" hidden style="display:none;">
+      <div class="success-icon">
+        <svg viewBox="0 0 60 60" fill="none">
+          <circle cx="30" cy="30" r="28" stroke="url(#sg)" stroke-width="3"/>
+          <path d="M18 30l8 8 16-16" stroke="#22538D" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          <defs>
+            <linearGradient id="sg" x1="0" y1="0" x2="60" y2="60" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#22538D"/>
+              <stop offset="1" stop-color="#3b82f6"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+      <h2 class="success-title">Report Submitted!</h2>
+      <p class="success-msg">Thank you for taking the time to think through the items carefully and write down your thoughts honestly. Your report has been recorded successfully.</p>
+      <button type="button" class="btn-another" id="anotherBtn">Submit Another Report</button>
+    </div>
+
+  </main>
+
+  <footer class="app-footer">
+    <p>© 2025–2026 American Life Bahçeşehir · Private Classes Report Portal</p>
+  </footer>
+
+</div><!-- /app-wrapper -->
+
+<script>
+// ─────────────────────────────────────────────────────────────────────────────
+// CONFIG — Replace with your deployed Apps Script Web App URL
+// ─────────────────────────────────────────────────────────────────────────────
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw6cz9HRIlblsR1VwNozGJSVyG0--UScMDQouHJx0GY_1OW-yBvxC1_gSkiR-6_62qF1A/exec';
+
+// ─────────────────────────────────────────────────────────────────────────────
+// State
+// ─────────────────────────────────────────────────────────────────────────────
+let currentPage = 1;
+
+// ─────────────────────────────────────────────────────────────────────────────
+// DOM refs
+// ─────────────────────────────────────────────────────────────────────────────
+const form          = document.getElementById('reportForm');
+const page1         = document.getElementById('page1');
+const page2         = document.getElementById('page2');
+const page3         = document.getElementById('page3');
+const progressFill  = document.getElementById('progressFill');
+const successScreen = document.getElementById('successScreen');
+const steps         = document.querySelectorAll('.step');
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Validation helpers
+// ─────────────────────────────────────────────────────────────────────────────
+function showError(id, show) {
+  const el  = document.getElementById(id);
+  const err = document.getElementById('err-' + id);
+  if (!err) return;
+  if (show) {
+    if (el) el.classList.add('invalid');
+    err.classList.add('visible');
+  } else {
+    if (el) el.classList.remove('invalid');
+    err.classList.remove('visible');
+  }
+}
+
+function getRadioValue(name) {
+  const checked = document.querySelector(`input[name="${name}"]:checked`);
+  return checked ? checked.value : '';
+}
+
+function validatePage1() {
+  const fields = ['teacher','student','date','classTime','level','classroom'];
+  let valid = true;
+  fields.forEach(id => {
+    const el = document.getElementById(id);
+    if (!el || !el.value.trim()) { showError(id, true); valid = false; }
+    else showError(id, false);
+  });
+  return valid;
+}
+
+function validatePage2() {
+  let valid = true;
+  ['lessonNumber','classPerformance','classParticipation'].forEach(name => {
+    if (!getRadioValue(name)) {
+      document.getElementById('err-' + name).classList.add('visible');
+      document.getElementById(name)?.classList.add('invalid');
+      valid = false;
+    } else {
+      document.getElementById('err-' + name).classList.remove('visible');
+      document.getElementById(name)?.classList.remove('invalid');
+    }
+  });
+  return valid;
+}
+
+function validatePage3() {
+  let valid = true;
+  ['lessonSummary','skillsPracticed','nextPlan','comments'].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el || !el.value.trim()) { showError(id, true); valid = false; }
+    else showError(id, false);
+  });
+  // radio: homeworkStatus
+  if (!getRadioValue('homeworkStatus')) {
+    document.getElementById('err-homeworkStatus').classList.add('visible');
+    document.getElementById('homeworkStatus')?.classList.add('invalid');
+    valid = false;
+  } else {
+    document.getElementById('err-homeworkStatus').classList.remove('visible');
+    document.getElementById('homeworkStatus')?.classList.remove('invalid');
+  }
+  return valid;
+}
+
+// Clear errors on change
+['teacher','student','date','classTime','level','classroom',
+ 'lessonSummary','skillsPracticed','nextPlan','comments'].forEach(id => {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.addEventListener('change', () => showError(id, false));
+  el.addEventListener('input',  () => showError(id, false));
+});
+
+// Radio error clear
+document.querySelectorAll('input[type="radio"]').forEach(r => {
+  r.addEventListener('change', () => {
+    const name = r.name;
+    const errEl = document.getElementById('err-' + name);
+    const grpEl = document.getElementById(name);
+    if (errEl) errEl.classList.remove('visible');
+    if (grpEl) grpEl.classList.remove('invalid');
+    // Highlight selected option
+    document.querySelectorAll(`input[name="${name}"]`).forEach(opt => {
+      opt.closest('.radio-option').classList.remove('selected');
+    });
+    r.closest('.radio-option').classList.add('selected');
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Page navigation
+// ─────────────────────────────────────────────────────────────────────────────
+function goToPage(n) {
+  currentPage = n;
+  page1.classList.toggle('active', n === 1);
+  page2.classList.toggle('active', n === 2);
+  page3.classList.toggle('active', n === 3);
+
+  steps.forEach(s => {
+    const sn = parseInt(s.dataset.step);
+    s.classList.remove('active','done');
+    if (sn < n)  s.classList.add('done');
+    if (sn === n) s.classList.add('active');
+  });
+
+  // Progress: 16% / 50% / 83%
+  const pcts = {1:'16%', 2:'50%', 3:'83%'};
+  progressFill.style.width = pcts[n] || '16%';
+
+  if (n === 2 || n === 3) buildSummary();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+document.getElementById('nextBtn1').addEventListener('click', () => {
+  if (validatePage1()) goToPage(2);
+});
+document.getElementById('backBtn2').addEventListener('click', () => goToPage(1));
+document.getElementById('nextBtn2').addEventListener('click', () => {
+  if (validatePage2()) goToPage(3);
+});
+document.getElementById('backBtn3').addEventListener('click', () => goToPage(2));
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Summary chips
+// ─────────────────────────────────────────────────────────────────────────────
+function chipSVG(type) {
+  const icons = {
+    teacher:   `<svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="5" r="3" stroke="currentColor" stroke-width="1.5"/><path d="M2 14c0-3.314 2.686-6 6-6s6 2.686 6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>`,
+    student:   `<svg viewBox="0 0 16 16" fill="none"><path d="M8 2l6 3-6 3-6-3 6-3z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M2 8v4l6 2 6-2V8" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>`,
+    date:      `<svg viewBox="0 0 16 16" fill="none"><rect x="2" y="3" width="12" height="11" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M5 1v4M11 1v4M2 7h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>`,
+    time:      `<svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.5"/><path d="M8 5v3.5l2 1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>`,
+    level:     `<svg viewBox="0 0 16 16" fill="none"><path d="M2 14l4-8 4 4 4-10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+    classroom: `<svg viewBox="0 0 16 16" fill="none"><path d="M8 1.5A5 5 0 0 1 13 6.5c0 3.5-5 8-5 8s-5-4.5-5-8a5 5 0 0 1 5-5z" stroke="currentColor" stroke-width="1.5"/><circle cx="8" cy="6.5" r="1.5" stroke="currentColor" stroke-width="1.5"/></svg>`,
+  };
+  return icons[type] || '';
+}
+
+function buildSummary() {
+  const teacher   = document.getElementById('teacher').value;
+  const student   = document.getElementById('student').value;
+  const date      = document.getElementById('date').value;
+  const classTime = document.getElementById('classTime').value;
+  const level     = document.getElementById('level').value;
+  const classroom = document.getElementById('classroom').value;
+
+  const teacherName = teacher.split(' - ').slice(1).join(' – ') || teacher;
+  const studentName = student.split(' - ').slice(1, 2).join('') || student;
+  const formattedDate = date
+    ? new Date(date + 'T00:00').toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' })
+    : date;
+
+  const items = [
+    { type:'teacher',   label: teacherName },
+    { type:'student',   label: studentName },
+    { type:'date',      label: formattedDate },
+    { type:'time',      label: classTime },
+    { type:'level',     label: level },
+    { type:'classroom', label: classroom },
+  ];
+
+  const html = items.map(i =>
+    `<div class="chip">${chipSVG(i.type)}<span>${i.label}</span></div>`
+  ).join('');
+
+  const s2 = document.getElementById('sessionSummary');
+  const s3 = document.getElementById('sessionSummary3');
+  if (s2) s2.innerHTML = html;
+  if (s3) s3.innerHTML = html;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Submit
+// ─────────────────────────────────────────────────────────────────────────────
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  if (!validatePage3()) return;
+
+  const submitBtn = document.getElementById('submitBtn');
+  submitBtn.classList.add('loading');
+  submitBtn.disabled = true;
+
+  const payload = {
+    teacher:            document.getElementById('teacher').value,
+    student:            document.getElementById('student').value,
+    date:               document.getElementById('date').value,
+    classTime:          document.getElementById('classTime').value,
+    level:              document.getElementById('level').value,
+    classroom:          document.getElementById('classroom').value,
+    lessonNumber:       getRadioValue('lessonNumber'),
+    classPerformance:   getRadioValue('classPerformance'),
+    classParticipation: getRadioValue('classParticipation'),
+    lessonSummary:      document.getElementById('lessonSummary').value,
+    skillsPracticed:    document.getElementById('skillsPracticed').value,
+    nextPlan:           document.getElementById('nextPlan').value,
+    homeworkStatus:     getRadioValue('homeworkStatus'),
+    comments:           document.getElementById('comments').value,
+    submittedAt:        new Date().toISOString(),
+  };
+
+  try {
+    if (APPS_SCRIPT_URL === 'YOUR_APPS_SCRIPT_WEB_APP_URL_HERE') {
+      await new Promise(r => setTimeout(r, 1400));
+      console.log('[DEMO] Form data:', payload);
+    } else {
+      await fetch(APPS_SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'text/plain' },
+        body: JSON.stringify(payload),
+      });
+    }
+
+    progressFill.style.width = '100%';
+    form.hidden = true;
+    successScreen.hidden = false;
+    successScreen.style.display = 'block';
+
+  } catch (err) {
+    console.error(err);
+    alert('Submission failed. Please try again.\n\n' + err.message);
+  } finally {
+    submitBtn.classList.remove('loading');
+    submitBtn.disabled = false;
+  }
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Reset
+// ─────────────────────────────────────────────────────────────────────────────
+document.getElementById('anotherBtn').addEventListener('click', () => {
+  form.reset();
+  // Clear radio selections
+  document.querySelectorAll('.radio-option').forEach(opt => opt.classList.remove('selected'));
+  form.hidden = false;
+  successScreen.hidden = true;
+  successScreen.style.display = 'none';
+  goToPage(1);
+  steps.forEach(s => {
+    const dot = s.querySelector('.step-dot span');
+    if (dot) dot.innerHTML = s.dataset.step;
+    s.classList.remove('done','active');
+  });
+  steps[0].classList.add('active');
+});
+</script>
+</body>
+</html>
